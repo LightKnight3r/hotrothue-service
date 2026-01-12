@@ -12,9 +12,9 @@ global.async = require('async');
 global.ms = require('ms');
 global.MailUtil = require('./lib/utils/mail');
 global.logger = Logger(`${__dirname}/logs`);
-const multer  = require('multer');
+const multer = require('multer');
 const upload = multer({
-  dest: 'public/uploads'
+  dest: 'public/uploads',
 });
 // Load models
 fs.readdirSync(`${__dirname}/lib/models`).forEach((file) => {
@@ -24,15 +24,13 @@ fs.readdirSync(`${__dirname}/lib/models`).forEach((file) => {
 // Middleware
 const bodyParser = require('body-parser');
 const tokenToUserMiddleware = require('./lib/middleware/tokenToUser');
-const validPermissionMiddleware = require('./lib/middleware/validPermission');
+const validPermissionMiddleware = require('./lib/middleware/verifyPermission');
 const requireLevel2Verified = require('./lib/middleware/requireLevel2Verified');
-
 
 // Start server
 const app = express();
 app.set('trust proxy', true);
 const server = require('http').Server(app);
-
 
 // Middleware setup
 app.use(cors());
@@ -55,6 +53,29 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
 });
 
+//Load routes
+const userRoutes = require('./lib/routes/user');
+const adminUserRoutes = require('./lib/routes/admin/user');
+const regionRoutes = require('./lib/routes/region');
+//Declare routes
+// Authentication routes
+declareRoute('post', '/login', [], userRoutes.login);
+declareRoute('post', '/logout', [tokenToUserMiddleware], userRoutes.logout);
+declareRoute('post', '/user/get', [tokenToUserMiddleware], userRoutes.get);
+
+//region routes for admin user management
+declareRoute('post', '/region/list', [], regionRoutes.list);
+
+// crud user routes
+declareRoute('post', '/admin/user/create', [tokenToUserMiddleware, validPermissionMiddleware('create_user')], adminUserRoutes.create);
+declareRoute('post', '/admin/user/list', [tokenToUserMiddleware, validPermissionMiddleware('view_user')], adminUserRoutes.list);
+declareRoute('post', '/admin/user/get', [tokenToUserMiddleware, validPermissionMiddleware('view_user')], adminUserRoutes.get);
+declareRoute('post', '/admin/user/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_user')], adminUserRoutes.update);
+declareRoute('post', '/admin/user/inactive', [tokenToUserMiddleware, validPermissionMiddleware('delete_user')], adminUserRoutes.inactive);
+declareRoute('post', '/admin/user/active', [tokenToUserMiddleware, validPermissionMiddleware('delete_user')], adminUserRoutes.active);
+declareRoute('post', '/admin/user/reset-password', [tokenToUserMiddleware, validPermissionMiddleware('reset_password')], adminUserRoutes.resetPassword);
+
+// Start listening
 const port = _.get(config, 'port', 3000);
 server.listen(port, () => {
   logger.logInfo('Server listening at port:', port);
