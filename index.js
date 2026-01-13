@@ -56,6 +56,7 @@ app.get('/health', (req, res) => {
 //Load routes
 const userRoutes = require('./lib/routes/user');
 const adminUserRoutes = require('./lib/routes/admin/user');
+const adminPermisstionRoutes = require('./lib/routes/admin/permission');
 const regionRoutes = require('./lib/routes/region');
 //Declare routes
 // Authentication routes
@@ -75,6 +76,15 @@ declareRoute('post', '/admin/user/update', [tokenToUserMiddleware, validPermissi
 declareRoute('post', '/admin/user/inactive', [tokenToUserMiddleware, validPermissionMiddleware('delete_user')], adminUserRoutes.inactive);
 declareRoute('post', '/admin/user/active', [tokenToUserMiddleware, validPermissionMiddleware('active_user')], adminUserRoutes.activate);
 declareRoute('post', '/admin/user/reset-password', [tokenToUserMiddleware, validPermissionMiddleware('reset_password')], adminUserRoutes.resetPassword);
+
+//crud permission routes
+declareRoute('post', '/admin/permission/create', [tokenToUserMiddleware, validPermissionMiddleware('create_permission')], adminPermisstionRoutes.create);
+declareRoute('post', '/admin/permission/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_permission')], adminPermisstionRoutes.delete);
+declareRoute('post', '/admin/permission/get', [tokenToUserMiddleware, validPermissionMiddleware('get_permission')], adminPermisstionRoutes.get);
+declareRoute('post', '/admin/permission/list', [tokenToUserMiddleware, validPermissionMiddleware('list_permission')], adminPermisstionRoutes.list);
+declareRoute('post', '/admin/permission/groups', [tokenToUserMiddleware, validPermissionMiddleware('groups_permission')], adminPermisstionRoutes.groups);
+declareRoute('post', '/admin/permission/list-by-group', [tokenToUserMiddleware, validPermissionMiddleware('list_by_group_permission')], adminPermisstionRoutes.listByGroup);
+declareRoute('post', '/admin/permission/update', [tokenToUserMiddleware, validPermissionMiddleware('update_permission')], adminPermisstionRoutes.update);
 
 // Start listening
 const port = _.get(config, 'port', 3000);
