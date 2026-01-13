@@ -73,7 +73,7 @@ declareRoute('post', '/admin/user/list', [tokenToUserMiddleware, validPermission
 declareRoute('post', '/admin/user/get', [tokenToUserMiddleware, validPermissionMiddleware('view_user')], adminUserRoutes.get);
 declareRoute('post', '/admin/user/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_user')], adminUserRoutes.update);
 declareRoute('post', '/admin/user/inactive', [tokenToUserMiddleware, validPermissionMiddleware('delete_user')], adminUserRoutes.inactive);
-declareRoute('post', '/admin/user/active', [tokenToUserMiddleware, validPermissionMiddleware('delete_user')], adminUserRoutes.active);
+declareRoute('post', '/admin/user/active', [tokenToUserMiddleware, validPermissionMiddleware('active_user')], adminUserRoutes.activate);
 declareRoute('post', '/admin/user/reset-password', [tokenToUserMiddleware, validPermissionMiddleware('reset_password')], adminUserRoutes.resetPassword);
 
 // Start listening
