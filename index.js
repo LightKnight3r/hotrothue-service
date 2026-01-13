@@ -62,6 +62,7 @@ const regionRoutes = require('./lib/routes/region');
 declareRoute('post', '/login', [], userRoutes.login);
 declareRoute('post', '/logout', [tokenToUserMiddleware], userRoutes.logout);
 declareRoute('post', '/user/get', [tokenToUserMiddleware], userRoutes.get);
+declareRoute('post', '/user/change-password', [tokenToUserMiddleware], userRoutes.changePassword);
 
 //region routes for admin user management
 declareRoute('post', '/region/list', [], regionRoutes.list);
