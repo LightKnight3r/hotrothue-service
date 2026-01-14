@@ -104,6 +104,10 @@ declareRoute('post', '/member/get', [tokenToUserMiddleware], MemberRoutes.get);
 declareRoute('post', '/member/resend-verification-email', [], MemberRoutes.resendVerificationEmail);
 declareRoute('post', '/member/verify-email', [], MemberRoutes.verifyEmail);
 declareRoute('post', '/member/update-profile', [tokenToUserMiddleware], MemberRoutes.updateProfile);
+declareRoute('post', '/member/forgot-password', [], MemberRoutes.forgotPassword);
+declareRoute('post', '/member/reset-password', [], MemberRoutes.resetPassword);
+declareRoute('post', '/member/change-password', [tokenToUserMiddleware], MemberRoutes.changePassword);
+
 // Start listening
 const port = _.get(config, 'port', 3000);
 server.listen(port, () => {
