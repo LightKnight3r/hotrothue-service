@@ -56,6 +56,7 @@ app.get('/health', (req, res) => {
 //Load routes
 const userRoutes = require('./lib/routes/user');
 const adminUserRoutes = require('./lib/routes/admin/user');
+const adminMemberRoutes = require('./lib/routes/admin/member');
 const adminPermisstionRoutes = require('./lib/routes/admin/permission');
 const regionRoutes = require('./lib/routes/region');
 //Declare routes
@@ -76,6 +77,14 @@ declareRoute('post', '/admin/user/update', [tokenToUserMiddleware, validPermissi
 declareRoute('post', '/admin/user/inactive', [tokenToUserMiddleware, validPermissionMiddleware('delete_user')], adminUserRoutes.inactive);
 declareRoute('post', '/admin/user/active', [tokenToUserMiddleware, validPermissionMiddleware('active_user')], adminUserRoutes.activate);
 declareRoute('post', '/admin/user/reset-password', [tokenToUserMiddleware, validPermissionMiddleware('reset_password')], adminUserRoutes.resetPassword);
+
+//crud member routes
+declareRoute('post', '/admin/member/list', [tokenToUserMiddleware, validPermissionMiddleware('view_member')], adminMemberRoutes.list);
+declareRoute('post', '/admin/member/get', [tokenToUserMiddleware, validPermissionMiddleware('view_member')], adminMemberRoutes.get);
+declareRoute('post', '/admin/member/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_member')], adminMemberRoutes.update);
+declareRoute('post', '/admin/member/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_member')], adminMemberRoutes.delete);
+declareRoute('post', '/admin/member/block', [tokenToUserMiddleware, validPermissionMiddleware('block_member')], adminMemberRoutes.block);
+declareRoute('post', '/admin/member/charge', [tokenToUserMiddleware, validPermissionMiddleware('charge_member')], adminMemberRoutes.charge);
 
 //crud permission routes
 declareRoute('post', '/admin/permission/create', [tokenToUserMiddleware, validPermissionMiddleware('create_permission')], adminPermisstionRoutes.create);
