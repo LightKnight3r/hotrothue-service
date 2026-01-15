@@ -25,7 +25,6 @@ fs.readdirSync(`${__dirname}/lib/models`).forEach((file) => {
 const bodyParser = require('body-parser');
 const tokenToUserMiddleware = require('./lib/middleware/tokenToUser');
 const validPermissionMiddleware = require('./lib/middleware/verifyPermission');
-const requireLevel2Verified = require('./lib/middleware/requireLevel2Verified');
 
 // Start server
 const app = express();
@@ -59,6 +58,8 @@ const adminUserRoutes = require('./lib/routes/admin/user');
 const adminMemberRoutes = require('./lib/routes/admin/member');
 const adminPermisstionRoutes = require('./lib/routes/admin/permission');
 const regionRoutes = require('./lib/routes/region');
+
+const MemberRoutes = require('./lib/routes/member');
 //Declare routes
 // Authentication routes
 declareRoute('post', '/login', [], userRoutes.login);
@@ -96,6 +97,18 @@ declareRoute('post', '/admin/permission/list', [tokenToUserMiddleware, validPerm
 declareRoute('post', '/admin/permission/groups', [tokenToUserMiddleware, validPermissionMiddleware('groups_permission')], adminPermisstionRoutes.groups);
 declareRoute('post', '/admin/permission/list-by-group', [tokenToUserMiddleware, validPermissionMiddleware('list_by_group_permission')], adminPermisstionRoutes.listByGroup);
 declareRoute('post', '/admin/permission/update', [tokenToUserMiddleware, validPermissionMiddleware('update_permission')], adminPermisstionRoutes.update);
+
+// Member routes
+declareRoute('post', '/member/register', [], MemberRoutes.register);
+declareRoute('post', '/member/login', [], MemberRoutes.login);
+declareRoute('post', '/member/logout', [tokenToUserMiddleware], MemberRoutes.logout);
+declareRoute('post', '/member/get', [tokenToUserMiddleware], MemberRoutes.get);
+declareRoute('post', '/member/resend-verification-email', [], MemberRoutes.resendVerificationEmail);
+declareRoute('post', '/member/verify-email', [], MemberRoutes.verifyEmail);
+declareRoute('post', '/member/update-profile', [tokenToUserMiddleware], MemberRoutes.updateProfile);
+declareRoute('post', '/member/forgot-password', [], MemberRoutes.forgotPassword);
+declareRoute('post', '/member/reset-password', [], MemberRoutes.resetPassword);
+declareRoute('post', '/member/change-password', [tokenToUserMiddleware], MemberRoutes.changePassword);
 
 // Start listening
 const port = _.get(config, 'port', 3000);
