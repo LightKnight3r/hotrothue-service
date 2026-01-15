@@ -85,7 +85,8 @@ declareRoute('post', '/admin/member/update', [tokenToUserMiddleware, validPermis
 declareRoute('post', '/admin/member/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_member')], adminMemberRoutes.delete);
 declareRoute('post', '/admin/member/block', [tokenToUserMiddleware, validPermissionMiddleware('block_member')], adminMemberRoutes.block);
 declareRoute('post', '/admin/member/charge', [tokenToUserMiddleware, validPermissionMiddleware('charge_member')], adminMemberRoutes.charge);
-declareRoute('post', '/admin/member/history', [tokenToUserMiddleware, validPermissionMiddleware('charge_member')], adminMemberRoutes.history);
+declareRoute('post', '/admin/member/charge-history', [tokenToUserMiddleware, validPermissionMiddleware('charge_member')], adminMemberRoutes.history);
+declareRoute('post', '/admin/member/charge-statistic', [tokenToUserMiddleware, validPermissionMiddleware('view_member')], adminMemberRoutes.statistic);
 
 //crud permission routes
 declareRoute('post', '/admin/permission/create', [tokenToUserMiddleware, validPermissionMiddleware('create_permission')], adminPermisstionRoutes.create);
