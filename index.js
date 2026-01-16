@@ -58,6 +58,7 @@ const adminUserRoutes = require('./lib/routes/admin/user');
 const adminMemberRoutes = require('./lib/routes/admin/member');
 const adminPermisstionRoutes = require('./lib/routes/admin/permission');
 const adminTaxDocumentRoutes = require('./lib/routes/admin/taxDocument');
+const adminInvoiceRoutes = require('./lib/routes/admin/invoice');
 
 const regionRoutes = require('./lib/routes/region');
 
@@ -108,6 +109,13 @@ declareRoute('post', '/admin/tax-document/list', [tokenToUserMiddleware, validPe
 declareRoute('post', '/admin/tax-document/get', [tokenToUserMiddleware, validPermissionMiddleware('view_tax_document')], adminTaxDocumentRoutes.get);
 declareRoute('post', '/admin/tax-document/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_tax_document')], adminTaxDocumentRoutes.update);
 declareRoute('post', '/admin/tax-document/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_tax_document')], adminTaxDocumentRoutes.delete);
+
+//crud Invoice routes
+declareRoute('post', '/admin/invoice/create', [tokenToUserMiddleware, validPermissionMiddleware('create_invoice')], adminInvoiceRoutes.create);
+declareRoute('post', '/admin/invoice/list', [tokenToUserMiddleware, validPermissionMiddleware('view_invoice')], adminInvoiceRoutes.list);
+declareRoute('post', '/admin/invoice/get', [tokenToUserMiddleware, validPermissionMiddleware('view_invoice')], adminInvoiceRoutes.get);
+declareRoute('post', '/admin/invoice/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_invoice')], adminInvoiceRoutes.update);
+declareRoute('post', '/admin/invoice/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_invoice')], adminInvoiceRoutes.delete);
 
 // Member routes
 declareRoute('post', '/member/register', [], MemberRoutes.register);
