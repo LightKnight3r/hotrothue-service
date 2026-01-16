@@ -122,6 +122,7 @@ declareRoute('post', '/member/reset-password', [], MemberRoutes.resetPassword);
 declareRoute('post', '/member/change-password', [tokenToUserMiddleware], MemberRoutes.changePassword);
 
 declareRoute('post', '/member/tax-document/list', [tokenToUserMiddleware], MemberTaxDocumentRoutes.list);
+declareRoute('post', '/member/tax-document/get', [tokenToUserMiddleware], MemberTaxDocumentRoutes.get);
 declareRoute('post', '/member/tax-document/get-config', [tokenToUserMiddleware], MemberTaxDocumentRoutes.getConfig);
 
 // Start listening
