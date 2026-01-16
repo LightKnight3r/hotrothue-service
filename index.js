@@ -57,8 +57,8 @@ const userRoutes = require('./lib/routes/user');
 const adminUserRoutes = require('./lib/routes/admin/user');
 const adminMemberRoutes = require('./lib/routes/admin/member');
 const adminPermisstionRoutes = require('./lib/routes/admin/permission');
+const adminTaxDocumentRoutes = require('./lib/routes/admin/taxDocument');
 const regionRoutes = require('./lib/routes/region');
-const taxDocumentRoutes = require('./lib/routes/taxDocument');
 
 const MemberRoutes = require('./lib/routes/member');
 //Declare routes
@@ -112,11 +112,11 @@ declareRoute('post', '/member/reset-password', [], MemberRoutes.resetPassword);
 declareRoute('post', '/member/change-password', [tokenToUserMiddleware], MemberRoutes.changePassword);
 
 // TaxDocument routes
-declareRoute('post', '/tax-document/create', [tokenToUserMiddleware, validPermissionMiddleware('create_tax_document')], taxDocumentRoutes.create);
-declareRoute('post', '/tax-document/list', [tokenToUserMiddleware, validPermissionMiddleware('view_tax_document')], taxDocumentRoutes.list);
-declareRoute('post', '/tax-document/get', [tokenToUserMiddleware, validPermissionMiddleware('view_tax_document')], taxDocumentRoutes.get);
-declareRoute('post', '/tax-document/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_tax_document')], taxDocumentRoutes.update);
-declareRoute('post', '/tax-document/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_tax_document')], taxDocumentRoutes.delete);
+declareRoute('post', '/tax-document/create', [tokenToUserMiddleware, validPermissionMiddleware('create_tax_document')], adminTaxDocumentRoutes.create);
+declareRoute('post', '/tax-document/list', [tokenToUserMiddleware, validPermissionMiddleware('view_tax_document')], adminTaxDocumentRoutes.list);
+declareRoute('post', '/tax-document/get', [tokenToUserMiddleware, validPermissionMiddleware('view_tax_document')], adminTaxDocumentRoutes.get);
+declareRoute('post', '/tax-document/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_tax_document')], adminTaxDocumentRoutes.update);
+declareRoute('post', '/tax-document/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_tax_document')], adminTaxDocumentRoutes.delete);
 // Start listening
 const port = _.get(config, 'port', 3000);
 server.listen(port, () => {
