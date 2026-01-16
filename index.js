@@ -62,6 +62,7 @@ const adminTaxDocumentRoutes = require('./lib/routes/admin/taxDocument');
 const regionRoutes = require('./lib/routes/region');
 
 const MemberRoutes = require('./lib/routes/member');
+const MemberTaxDocumentRoutes = require('./lib/routes/taxDocument');
 
 //Declare routes
 // Authentication routes
@@ -119,6 +120,9 @@ declareRoute('post', '/member/update-profile', [tokenToUserMiddleware], MemberRo
 declareRoute('post', '/member/forgot-password', [], MemberRoutes.forgotPassword);
 declareRoute('post', '/member/reset-password', [], MemberRoutes.resetPassword);
 declareRoute('post', '/member/change-password', [tokenToUserMiddleware], MemberRoutes.changePassword);
+
+declareRoute('post', '/member/tax-document/list', [tokenToUserMiddleware], MemberTaxDocumentRoutes.list);
+declareRoute('post', '/member/tax-document/get-config', [tokenToUserMiddleware], MemberTaxDocumentRoutes.getConfig);
 
 // Start listening
 const port = _.get(config, 'port', 3000);
