@@ -58,9 +58,11 @@ const adminUserRoutes = require('./lib/routes/admin/user');
 const adminMemberRoutes = require('./lib/routes/admin/member');
 const adminPermisstionRoutes = require('./lib/routes/admin/permission');
 const adminTaxDocumentRoutes = require('./lib/routes/admin/taxDocument');
+
 const regionRoutes = require('./lib/routes/region');
 
 const MemberRoutes = require('./lib/routes/member');
+
 //Declare routes
 // Authentication routes
 declareRoute('post', '/login', [], userRoutes.login);
@@ -99,6 +101,13 @@ declareRoute('post', '/admin/permission/groups', [tokenToUserMiddleware, validPe
 declareRoute('post', '/admin/permission/list-by-group', [tokenToUserMiddleware, validPermissionMiddleware('list_by_group_permission')], adminPermisstionRoutes.listByGroup);
 declareRoute('post', '/admin/permission/update', [tokenToUserMiddleware, validPermissionMiddleware('update_permission')], adminPermisstionRoutes.update);
 
+//crud TaxDocument routes
+declareRoute('post', '/admin/tax-document/create', [tokenToUserMiddleware, validPermissionMiddleware('create_tax_document')], adminTaxDocumentRoutes.create);
+declareRoute('post', '/admin/tax-document/list', [tokenToUserMiddleware, validPermissionMiddleware('view_tax_document')], adminTaxDocumentRoutes.list);
+declareRoute('post', '/admin/tax-document/get', [tokenToUserMiddleware, validPermissionMiddleware('view_tax_document')], adminTaxDocumentRoutes.get);
+declareRoute('post', '/admin/tax-document/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_tax_document')], adminTaxDocumentRoutes.update);
+declareRoute('post', '/admin/tax-document/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_tax_document')], adminTaxDocumentRoutes.delete);
+
 // Member routes
 declareRoute('post', '/member/register', [], MemberRoutes.register);
 declareRoute('post', '/member/login', [], MemberRoutes.login);
@@ -111,12 +120,6 @@ declareRoute('post', '/member/forgot-password', [], MemberRoutes.forgotPassword)
 declareRoute('post', '/member/reset-password', [], MemberRoutes.resetPassword);
 declareRoute('post', '/member/change-password', [tokenToUserMiddleware], MemberRoutes.changePassword);
 
-// TaxDocument routes
-declareRoute('post', '/tax-document/create', [tokenToUserMiddleware, validPermissionMiddleware('create_tax_document')], adminTaxDocumentRoutes.create);
-declareRoute('post', '/tax-document/list', [tokenToUserMiddleware, validPermissionMiddleware('view_tax_document')], adminTaxDocumentRoutes.list);
-declareRoute('post', '/tax-document/get', [tokenToUserMiddleware, validPermissionMiddleware('view_tax_document')], adminTaxDocumentRoutes.get);
-declareRoute('post', '/tax-document/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_tax_document')], adminTaxDocumentRoutes.update);
-declareRoute('post', '/tax-document/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_tax_document')], adminTaxDocumentRoutes.delete);
 // Start listening
 const port = _.get(config, 'port', 3000);
 server.listen(port, () => {
