@@ -59,6 +59,7 @@ const adminMemberRoutes = require('./lib/routes/admin/member');
 const adminPermisstionRoutes = require('./lib/routes/admin/permission');
 const adminTaxDocumentRoutes = require('./lib/routes/admin/taxDocument');
 const adminInvoiceRoutes = require('./lib/routes/admin/invoice');
+const adminPolicyDocumentRoutes = require('./lib/routes/admin/policyDocument');
 
 const regionRoutes = require('./lib/routes/region');
 
@@ -116,6 +117,13 @@ declareRoute('post', '/admin/invoice/list', [tokenToUserMiddleware, validPermiss
 declareRoute('post', '/admin/invoice/get', [tokenToUserMiddleware, validPermissionMiddleware('view_invoice')], adminInvoiceRoutes.get);
 declareRoute('post', '/admin/invoice/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_invoice')], adminInvoiceRoutes.update);
 declareRoute('post', '/admin/invoice/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_invoice')], adminInvoiceRoutes.delete);
+
+//crud PolicyDocument routes
+declareRoute('post', '/admin/policy-document/create', [tokenToUserMiddleware, validPermissionMiddleware('create_policy_document')], adminPolicyDocumentRoutes.create);
+declareRoute('post', '/admin/policy-document/list', [tokenToUserMiddleware, validPermissionMiddleware('view_policy_document')], adminPolicyDocumentRoutes.list);
+declareRoute('post', '/admin/policy-document/get', [tokenToUserMiddleware, validPermissionMiddleware('view_policy_document')], adminPolicyDocumentRoutes.get);
+declareRoute('post', '/admin/policy-document/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_policy_document')], adminPolicyDocumentRoutes.update);
+declareRoute('post', '/admin/policy-document/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_policy_document')], adminPolicyDocumentRoutes.delete);
 
 // Member routes
 declareRoute('post', '/member/register', [], MemberRoutes.register);
