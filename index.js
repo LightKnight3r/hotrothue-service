@@ -66,6 +66,7 @@ const regionRoutes = require('./lib/routes/region');
 
 const MemberRoutes = require('./lib/routes/member');
 const MemberTaxDocumentRoutes = require('./lib/routes/taxDocument');
+const InvoiceOrderRoutes = require('./lib/routes/invoiceOrder');
 
 //Declare routes
 // Authentication routes
@@ -154,6 +155,11 @@ declareRoute('post', '/admin/support-request/get', [tokenToUserMiddleware, valid
 declareRoute('post', '/admin/support-request/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_support_request')], adminSupportRequestRoutes.update);
 declareRoute('post', '/admin/support-request/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_support_request')], adminSupportRequestRoutes.delete);
 
+// Invoice Order routes
+declareRoute('post', '/member/invoice-order/convert-tin', [upload.single('file'), tokenToUserMiddleware], InvoiceOrderRoutes.convertTIN);
+declareRoute('post', '/member/invoice-order/create', [tokenToUserMiddleware], InvoiceOrderRoutes.create);
+declareRoute('post', '/member/invoice-order/list', [tokenToUserMiddleware], InvoiceOrderRoutes.list);
+declareRoute('post', '/member/invoice-order/get', [tokenToUserMiddleware], InvoiceOrderRoutes.get);
 // Start listening
 const port = _.get(config, 'port', 3000);
 server.listen(port, () => {

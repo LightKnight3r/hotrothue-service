@@ -42,7 +42,8 @@
     "validator": "^13.15.15",
     "vietnamese-conversion": "^2.0.0",
     "winston": "2.4.6",
-    "winston-daily-rotate-file": "3.10.0"
+    "winston-daily-rotate-file": "3.10.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
