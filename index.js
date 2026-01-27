@@ -160,6 +160,8 @@ declareRoute('post', '/member/invoice-order/convert-tin', [upload.single('file')
 declareRoute('post', '/member/invoice-order/create', [tokenToUserMiddleware], InvoiceOrderRoutes.create);
 declareRoute('post', '/member/invoice-order/list', [tokenToUserMiddleware], InvoiceOrderRoutes.list);
 declareRoute('post', '/member/invoice-order/get', [tokenToUserMiddleware], InvoiceOrderRoutes.get);
+declareRoute('post', '/member/invoice-order/pay-order', [], InvoiceOrderRoutes.payOrder);
+
 // Start listening
 const port = _.get(config, 'port', 3000);
 server.listen(port, () => {
