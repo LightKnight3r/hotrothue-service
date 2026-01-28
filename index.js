@@ -61,6 +61,7 @@ const adminTaxDocumentRoutes = require('./lib/routes/admin/taxDocument');
 const adminInvoiceRoutes = require('./lib/routes/admin/invoice');
 const adminPolicyDocumentRoutes = require('./lib/routes/admin/policyDocument');
 const adminSupportRequestRoutes = require('./lib/routes/admin/supportRequest');
+const adminInvoiceOrderRoutes = require('./lib/routes/admin/invoiceOrder');
 
 const regionRoutes = require('./lib/routes/region');
 
@@ -133,6 +134,19 @@ declareRoute('post', '/admin/support-request/get', [tokenToUserMiddleware, valid
 declareRoute('post', '/admin/support-request/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_support_request')], adminSupportRequestRoutes.update);
 declareRoute('post', '/admin/support-request/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_support_request')], adminSupportRequestRoutes.delete);
 
+// Admin Support Request routes
+declareRoute('post', '/admin/support-request/list', [tokenToUserMiddleware, validPermissionMiddleware('view_support_request')], adminSupportRequestRoutes.list);
+declareRoute('post', '/admin/support-request/get', [tokenToUserMiddleware, validPermissionMiddleware('view_support_request')], adminSupportRequestRoutes.get);
+declareRoute('post', '/admin/support-request/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_support_request')], adminSupportRequestRoutes.update);
+declareRoute('post', '/admin/support-request/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_support_request')], adminSupportRequestRoutes.delete);
+
+// Admin Invoice Order routes
+declareRoute('post', '/admin/invoice-order/list', [tokenToUserMiddleware, validPermissionMiddleware('view_invoice_order')], adminInvoiceOrderRoutes.list);
+declareRoute('post', '/admin/invoice-order/get', [tokenToUserMiddleware, validPermissionMiddleware('view_invoice_order')], adminInvoiceOrderRoutes.get);
+declareRoute('post', '/admin/invoice-order/accept', [tokenToUserMiddleware, validPermissionMiddleware('edit_invoice_order')], adminInvoiceOrderRoutes.accept);
+declareRoute('post', '/admin/invoice-order/update-item', [tokenToUserMiddleware, validPermissionMiddleware('edit_invoice_order')], adminInvoiceOrderRoutes.updateItem);
+declareRoute('post', '/admin/invoice-order/done', [tokenToUserMiddleware, validPermissionMiddleware('edit_invoice_order')], adminInvoiceOrderRoutes.done);
+
 // Member routes
 declareRoute('post', '/member/register', [], MemberRoutes.register);
 declareRoute('post', '/member/login', [], MemberRoutes.login);
@@ -148,12 +162,6 @@ declareRoute('post', '/member/change-password', [tokenToUserMiddleware], MemberR
 declareRoute('post', '/member/tax-document/list', [tokenToUserMiddleware], MemberTaxDocumentRoutes.list);
 declareRoute('post', '/member/tax-document/get', [tokenToUserMiddleware], MemberTaxDocumentRoutes.get);
 declareRoute('post', '/member/tax-document/get-config', [tokenToUserMiddleware], MemberTaxDocumentRoutes.getConfig);
-
-// Admin Support Request routes
-declareRoute('post', '/admin/support-request/list', [tokenToUserMiddleware, validPermissionMiddleware('view_support_request')], adminSupportRequestRoutes.list);
-declareRoute('post', '/admin/support-request/get', [tokenToUserMiddleware, validPermissionMiddleware('view_support_request')], adminSupportRequestRoutes.get);
-declareRoute('post', '/admin/support-request/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_support_request')], adminSupportRequestRoutes.update);
-declareRoute('post', '/admin/support-request/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_support_request')], adminSupportRequestRoutes.delete);
 
 // Invoice Order routes
 declareRoute('post', '/member/invoice-order/convert-tin', [upload.single('file'), tokenToUserMiddleware], InvoiceOrderRoutes.convertTIN);
