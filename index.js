@@ -63,6 +63,7 @@ const adminPolicyDocumentRoutes = require('./lib/routes/admin/policyDocument');
 const adminSupportRequestRoutes = require('./lib/routes/admin/supportRequest');
 const adminInvoiceOrderRoutes = require('./lib/routes/admin/invoiceOrder');
 const adminMembershipPackageRoutes = require('./lib/routes/admin/membershipPackage');
+const adminSupportCategoryRoutes = require('./lib/routes/admin/supportCategory');
 
 const regionRoutes = require('./lib/routes/region');
 
@@ -155,6 +156,13 @@ declareRoute('post', '/admin/membership-package/list', [tokenToUserMiddleware, v
 declareRoute('post', '/admin/membership-package/get', [tokenToUserMiddleware, validPermissionMiddleware('view_membership_package')], adminMembershipPackageRoutes.get);
 declareRoute('post', '/admin/membership-package/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_membership_package')], adminMembershipPackageRoutes.update);
 declareRoute('post', '/admin/membership-package/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_membership_package')], adminMembershipPackageRoutes.delete);
+
+// Admin Support Category routes
+declareRoute('post', '/admin/support-category/create', [tokenToUserMiddleware, validPermissionMiddleware('create_support_category')], adminSupportCategoryRoutes.create);
+declareRoute('post', '/admin/support-category/list', [tokenToUserMiddleware, validPermissionMiddleware('view_support_category')], adminSupportCategoryRoutes.list);
+declareRoute('post', '/admin/support-category/get', [tokenToUserMiddleware, validPermissionMiddleware('view_support_category')], adminSupportCategoryRoutes.get);
+declareRoute('post', '/admin/support-category/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_support_category')], adminSupportCategoryRoutes.update);
+declareRoute('post', '/admin/support-category/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_support_category')], adminSupportCategoryRoutes.delete);
 
 // Member routes
 declareRoute('post', '/member/register', [], MemberRoutes.register);
