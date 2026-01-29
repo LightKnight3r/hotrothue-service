@@ -62,6 +62,7 @@ const adminInvoiceRoutes = require('./lib/routes/admin/invoice');
 const adminPolicyDocumentRoutes = require('./lib/routes/admin/policyDocument');
 const adminSupportRequestRoutes = require('./lib/routes/admin/supportRequest');
 const adminInvoiceOrderRoutes = require('./lib/routes/admin/invoiceOrder');
+const adminMembershipPackageRoutes = require('./lib/routes/admin/membershipPackage');
 
 const regionRoutes = require('./lib/routes/region');
 
@@ -146,6 +147,13 @@ declareRoute('post', '/admin/invoice-order/get', [tokenToUserMiddleware, validPe
 declareRoute('post', '/admin/invoice-order/accept', [tokenToUserMiddleware, validPermissionMiddleware('edit_invoice_order')], adminInvoiceOrderRoutes.accept);
 declareRoute('post', '/admin/invoice-order/update-item', [tokenToUserMiddleware, validPermissionMiddleware('edit_invoice_order')], adminInvoiceOrderRoutes.updateItem);
 declareRoute('post', '/admin/invoice-order/done', [tokenToUserMiddleware, validPermissionMiddleware('edit_invoice_order')], adminInvoiceOrderRoutes.done);
+
+// Admin Membership Package routes
+declareRoute('post', '/admin/membership-package/create', [tokenToUserMiddleware, validPermissionMiddleware('create_membership_package')], adminMembershipPackageRoutes.create);
+declareRoute('post', '/admin/membership-package/list', [tokenToUserMiddleware, validPermissionMiddleware('view_membership_package')], adminMembershipPackageRoutes.list);
+declareRoute('post', '/admin/membership-package/get', [tokenToUserMiddleware, validPermissionMiddleware('view_membership_package')], adminMembershipPackageRoutes.get);
+declareRoute('post', '/admin/membership-package/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_membership_package')], adminMembershipPackageRoutes.update);
+declareRoute('post', '/admin/membership-package/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_membership_package')], adminMembershipPackageRoutes.delete);
 
 // Member routes
 declareRoute('post', '/member/register', [], MemberRoutes.register);
