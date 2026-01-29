@@ -71,6 +71,7 @@ const MemberRoutes = require('./lib/routes/member');
 const MemberTaxDocumentRoutes = require('./lib/routes/taxDocument');
 const InvoiceOrderRoutes = require('./lib/routes/invoiceOrder');
 const MembershipPackageRoutes = require('./lib/routes/membershipPackage');
+const SupportRequestRoutes = require('./lib/routes/supportRequest');
 
 //Declare routes
 // Authentication routes
@@ -191,6 +192,11 @@ declareRoute('post', '/member/invoice-order/pay-order', [], InvoiceOrderRoutes.p
 declareRoute('post', '/member/membership-package/list', [tokenToUserMiddleware], MembershipPackageRoutes.list);
 declareRoute('post', '/member/membership-package/buy', [tokenToUserMiddleware], MembershipPackageRoutes.buy);
 
+// Support Request routes
+declareRoute('post', '/member/support-request/send', [tokenToUserMiddleware], SupportRequestRoutes.send);
+declareRoute('post', '/member/support-request/list', [tokenToUserMiddleware], SupportRequestRoutes.list);
+declareRoute('post', '/member/support-request/get', [tokenToUserMiddleware], SupportRequestRoutes.get);
+declareRoute('post', '/member/support-request/list-category', [tokenToUserMiddleware], SupportRequestRoutes.listCategory);
 // Start listening
 const port = _.get(config, 'port', 3000);
 server.listen(port, () => {
