@@ -69,6 +69,7 @@ const regionRoutes = require('./lib/routes/region');
 const MemberRoutes = require('./lib/routes/member');
 const MemberTaxDocumentRoutes = require('./lib/routes/taxDocument');
 const InvoiceOrderRoutes = require('./lib/routes/invoiceOrder');
+const MembershipPackageRoutes = require('./lib/routes/membershipPackage');
 
 //Declare routes
 // Authentication routes
@@ -177,6 +178,10 @@ declareRoute('post', '/member/invoice-order/create', [tokenToUserMiddleware], In
 declareRoute('post', '/member/invoice-order/list', [tokenToUserMiddleware], InvoiceOrderRoutes.list);
 declareRoute('post', '/member/invoice-order/get', [tokenToUserMiddleware], InvoiceOrderRoutes.get);
 declareRoute('post', '/member/invoice-order/pay-order', [], InvoiceOrderRoutes.payOrder);
+
+// Membership Package routes
+declareRoute('post', '/member/membership-package/list', [tokenToUserMiddleware], MembershipPackageRoutes.list);
+declareRoute('post', '/member/membership-package/buy', [tokenToUserMiddleware], MembershipPackageRoutes.buy);
 
 // Start listening
 const port = _.get(config, 'port', 3000);
