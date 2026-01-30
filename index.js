@@ -62,12 +62,16 @@ const adminInvoiceRoutes = require('./lib/routes/admin/invoice');
 const adminPolicyDocumentRoutes = require('./lib/routes/admin/policyDocument');
 const adminSupportRequestRoutes = require('./lib/routes/admin/supportRequest');
 const adminInvoiceOrderRoutes = require('./lib/routes/admin/invoiceOrder');
+const adminMembershipPackageRoutes = require('./lib/routes/admin/membershipPackage');
+const adminSupportCategoryRoutes = require('./lib/routes/admin/supportCategory');
 
 const regionRoutes = require('./lib/routes/region');
 
 const MemberRoutes = require('./lib/routes/member');
 const MemberTaxDocumentRoutes = require('./lib/routes/taxDocument');
 const InvoiceOrderRoutes = require('./lib/routes/invoiceOrder');
+const MembershipPackageRoutes = require('./lib/routes/membershipPackage');
+const SupportRequestRoutes = require('./lib/routes/supportRequest');
 
 //Declare routes
 // Authentication routes
@@ -147,6 +151,20 @@ declareRoute('post', '/admin/invoice-order/accept', [tokenToUserMiddleware, vali
 declareRoute('post', '/admin/invoice-order/update-item', [tokenToUserMiddleware, validPermissionMiddleware('edit_invoice_order')], adminInvoiceOrderRoutes.updateItem);
 declareRoute('post', '/admin/invoice-order/done', [tokenToUserMiddleware, validPermissionMiddleware('edit_invoice_order')], adminInvoiceOrderRoutes.done);
 
+// Admin Membership Package routes
+declareRoute('post', '/admin/membership-package/create', [tokenToUserMiddleware, validPermissionMiddleware('create_membership_package')], adminMembershipPackageRoutes.create);
+declareRoute('post', '/admin/membership-package/list', [tokenToUserMiddleware, validPermissionMiddleware('view_membership_package')], adminMembershipPackageRoutes.list);
+declareRoute('post', '/admin/membership-package/get', [tokenToUserMiddleware, validPermissionMiddleware('view_membership_package')], adminMembershipPackageRoutes.get);
+declareRoute('post', '/admin/membership-package/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_membership_package')], adminMembershipPackageRoutes.update);
+declareRoute('post', '/admin/membership-package/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_membership_package')], adminMembershipPackageRoutes.delete);
+
+// Admin Support Category routes
+declareRoute('post', '/admin/support-category/create', [tokenToUserMiddleware, validPermissionMiddleware('create_support_category')], adminSupportCategoryRoutes.create);
+declareRoute('post', '/admin/support-category/list', [tokenToUserMiddleware, validPermissionMiddleware('view_support_category')], adminSupportCategoryRoutes.list);
+declareRoute('post', '/admin/support-category/get', [tokenToUserMiddleware, validPermissionMiddleware('view_support_category')], adminSupportCategoryRoutes.get);
+declareRoute('post', '/admin/support-category/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_support_category')], adminSupportCategoryRoutes.update);
+declareRoute('post', '/admin/support-category/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_support_category')], adminSupportCategoryRoutes.delete);
+
 // Member routes
 declareRoute('post', '/member/register', [], MemberRoutes.register);
 declareRoute('post', '/member/login', [], MemberRoutes.login);
@@ -170,6 +188,15 @@ declareRoute('post', '/member/invoice-order/list', [tokenToUserMiddleware], Invo
 declareRoute('post', '/member/invoice-order/get', [tokenToUserMiddleware], InvoiceOrderRoutes.get);
 declareRoute('post', '/member/invoice-order/pay-order', [], InvoiceOrderRoutes.payOrder);
 
+// Membership Package routes
+declareRoute('post', '/member/membership-package/list', [tokenToUserMiddleware], MembershipPackageRoutes.list);
+declareRoute('post', '/member/membership-package/buy', [tokenToUserMiddleware], MembershipPackageRoutes.buy);
+
+// Support Request routes
+declareRoute('post', '/member/support-request/send', [tokenToUserMiddleware], SupportRequestRoutes.send);
+declareRoute('post', '/member/support-request/list', [tokenToUserMiddleware], SupportRequestRoutes.list);
+declareRoute('post', '/member/support-request/get', [tokenToUserMiddleware], SupportRequestRoutes.get);
+declareRoute('post', '/member/support-request/list-category', [tokenToUserMiddleware], SupportRequestRoutes.listCategory);
 // Start listening
 const port = _.get(config, 'port', 3000);
 server.listen(port, () => {
