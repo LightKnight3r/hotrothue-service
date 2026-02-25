@@ -25,6 +25,7 @@ fs.readdirSync(`${__dirname}/lib/models`).forEach((file) => {
 const bodyParser = require('body-parser');
 const tokenToUserMiddleware = require('./lib/middleware/tokenToUser');
 const validPermissionMiddleware = require('./lib/middleware/verifyPermission');
+const verifyFeaturePolicyMiddleware = require('./lib/middleware/verifyFeaturePolicy');
 
 // Start server
 const app = express();
@@ -64,6 +65,8 @@ const adminSupportRequestRoutes = require('./lib/routes/admin/supportRequest');
 const adminInvoiceOrderRoutes = require('./lib/routes/admin/invoiceOrder');
 const adminMembershipPackageRoutes = require('./lib/routes/admin/membershipPackage');
 const adminSupportCategoryRoutes = require('./lib/routes/admin/supportCategory');
+const adminFeatureRoutes = require('./lib/routes/admin/feature');
+const adminFeaturePolicyRoutes = require('./lib/routes/admin/featurePolicy');
 
 const regionRoutes = require('./lib/routes/region');
 
@@ -72,6 +75,8 @@ const MemberTaxDocumentRoutes = require('./lib/routes/taxDocument');
 const InvoiceOrderRoutes = require('./lib/routes/invoiceOrder');
 const MembershipPackageRoutes = require('./lib/routes/membershipPackage');
 const SupportRequestRoutes = require('./lib/routes/supportRequest');
+const FeatureRoutes = require('./lib/routes/feature');
+const MemberSubscriptionRoutes = require('./lib/routes/memberSubscription');
 
 //Declare routes
 // Authentication routes
@@ -165,6 +170,20 @@ declareRoute('post', '/admin/support-category/get', [tokenToUserMiddleware, vali
 declareRoute('post', '/admin/support-category/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_support_category')], adminSupportCategoryRoutes.update);
 declareRoute('post', '/admin/support-category/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_support_category')], adminSupportCategoryRoutes.delete);
 
+// Admin Feature routes
+declareRoute('post', '/admin/feature/create', [tokenToUserMiddleware, validPermissionMiddleware('create_feature')], adminFeatureRoutes.create);
+declareRoute('post', '/admin/feature/list', [tokenToUserMiddleware, validPermissionMiddleware('view_feature')], adminFeatureRoutes.list);
+declareRoute('post', '/admin/feature/get', [tokenToUserMiddleware, validPermissionMiddleware('view_feature')], adminFeatureRoutes.get);
+declareRoute('post', '/admin/feature/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_feature')], adminFeatureRoutes.update);
+declareRoute('post', '/admin/feature/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_feature')], adminFeatureRoutes.delete);
+
+// Admin Feature Policy routes
+declareRoute('post', '/admin/feature-policy/create', [tokenToUserMiddleware, validPermissionMiddleware('create_feature_policy')], adminFeaturePolicyRoutes.create);
+declareRoute('post', '/admin/feature-policy/list', [tokenToUserMiddleware, validPermissionMiddleware('view_feature_policy')], adminFeaturePolicyRoutes.list);
+declareRoute('post', '/admin/feature-policy/get', [tokenToUserMiddleware, validPermissionMiddleware('view_feature_policy')], adminFeaturePolicyRoutes.get);
+declareRoute('post', '/admin/feature-policy/update', [tokenToUserMiddleware, validPermissionMiddleware('edit_feature_policy')], adminFeaturePolicyRoutes.update);
+declareRoute('post', '/admin/feature-policy/delete', [tokenToUserMiddleware, validPermissionMiddleware('delete_feature_policy')], adminFeaturePolicyRoutes.delete);
+
 // Member routes
 declareRoute('post', '/member/register', [], MemberRoutes.register);
 declareRoute('post', '/member/login', [], MemberRoutes.login);
@@ -177,15 +196,15 @@ declareRoute('post', '/member/forgot-password', [], MemberRoutes.forgotPassword)
 declareRoute('post', '/member/reset-password', [], MemberRoutes.resetPassword);
 declareRoute('post', '/member/change-password', [tokenToUserMiddleware], MemberRoutes.changePassword);
 
-declareRoute('post', '/member/tax-document/list', [tokenToUserMiddleware], MemberTaxDocumentRoutes.list);
-declareRoute('post', '/member/tax-document/get', [tokenToUserMiddleware], MemberTaxDocumentRoutes.get);
-declareRoute('post', '/member/tax-document/get-config', [tokenToUserMiddleware], MemberTaxDocumentRoutes.getConfig);
+declareRoute('post', '/member/tax-document/list', [tokenToUserMiddleware, verifyFeaturePolicyMiddleware('ACCESS-TAX-DOCUMENT')], MemberTaxDocumentRoutes.list);
+declareRoute('post', '/member/tax-document/get', [tokenToUserMiddleware, verifyFeaturePolicyMiddleware('ACCESS-TAX-DOCUMENT')], MemberTaxDocumentRoutes.get);
+declareRoute('post', '/member/tax-document/get-config', [tokenToUserMiddleware, verifyFeaturePolicyMiddleware('ACCESS-TAX-DOCUMENT')], MemberTaxDocumentRoutes.getConfig);
 
 // Invoice Order routes
-declareRoute('post', '/member/invoice-order/convert-tin', [upload.single('file'), tokenToUserMiddleware], InvoiceOrderRoutes.convertTIN);
-declareRoute('post', '/member/invoice-order/create', [tokenToUserMiddleware], InvoiceOrderRoutes.create);
-declareRoute('post', '/member/invoice-order/list', [tokenToUserMiddleware], InvoiceOrderRoutes.list);
-declareRoute('post', '/member/invoice-order/get', [tokenToUserMiddleware], InvoiceOrderRoutes.get);
+declareRoute('post', '/member/invoice-order/convert-tin', [upload.single('file'), tokenToUserMiddleware, verifyFeaturePolicyMiddleware('INVOICE-LOOKUP')], InvoiceOrderRoutes.convertTIN);
+declareRoute('post', '/member/invoice-order/create', [tokenToUserMiddleware, verifyFeaturePolicyMiddleware('INVOICE-LOOKUP')], InvoiceOrderRoutes.create);
+declareRoute('post', '/member/invoice-order/list', [tokenToUserMiddleware, verifyFeaturePolicyMiddleware('INVOICE-LOOKUP')], InvoiceOrderRoutes.list);
+declareRoute('post', '/member/invoice-order/get', [tokenToUserMiddleware, verifyFeaturePolicyMiddleware('INVOICE-LOOKUP')], InvoiceOrderRoutes.get);
 declareRoute('post', '/member/invoice-order/pay-order', [], InvoiceOrderRoutes.payOrder);
 
 // Membership Package routes
@@ -193,10 +212,16 @@ declareRoute('post', '/member/membership-package/list', [tokenToUserMiddleware],
 declareRoute('post', '/member/membership-package/buy', [tokenToUserMiddleware], MembershipPackageRoutes.buy);
 
 // Support Request routes
-declareRoute('post', '/member/support-request/send', [tokenToUserMiddleware], SupportRequestRoutes.send);
-declareRoute('post', '/member/support-request/list', [tokenToUserMiddleware], SupportRequestRoutes.list);
-declareRoute('post', '/member/support-request/get', [tokenToUserMiddleware], SupportRequestRoutes.get);
-declareRoute('post', '/member/support-request/list-category', [tokenToUserMiddleware], SupportRequestRoutes.listCategory);
+declareRoute('post', '/member/support-request/send', [tokenToUserMiddleware, verifyFeaturePolicyMiddleware('SUPPORT')], SupportRequestRoutes.send);
+declareRoute('post', '/member/support-request/list', [tokenToUserMiddleware, verifyFeaturePolicyMiddleware('SUPPORT')], SupportRequestRoutes.list);
+declareRoute('post', '/member/support-request/get', [tokenToUserMiddleware, verifyFeaturePolicyMiddleware('SUPPORT')], SupportRequestRoutes.get);
+declareRoute('post', '/member/support-request/list-category', [tokenToUserMiddleware, verifyFeaturePolicyMiddleware('SUPPORT')], SupportRequestRoutes.listCategory);
+
+// Feature routes
+declareRoute('post', '/member/compare-feature', [tokenToUserMiddleware], FeatureRoutes.compare);
+
+// Member Subscription routes
+declareRoute('post', '/member/subscription/list', [tokenToUserMiddleware], MemberSubscriptionRoutes.list);
 // Start listening
 const port = _.get(config, 'port', 3000);
 server.listen(port, () => {
